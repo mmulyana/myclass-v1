@@ -1,7 +1,50 @@
+import Pagination from "@/Components/Pagination";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import { Head, Link, usePage } from "@inertiajs/react";
+import { Head, Link, router, usePage } from "@inertiajs/react";
+import { useEffect, useMemo, useRef, useState } from 'react';
 
 export default function Dashboard({ auth, students }) {
+    const page = usePage()
+
+    const isInitialRender = useRef(true);
+    
+    const [searchTerm, setSearchTerm] = useState(usePage().props.search || "");
+    const [classId, setClassId] = useState(usePage().props.class_id || "");
+    const [pageNumber, setPageNumber] = useState("");
+
+    const updatedPageNumber = (link) => {
+        setPageNumber(link.url.split("=")[1]);
+    };
+
+    let studentsUrl = useMemo(() => {
+        const url = new URL(route("students.index"));
+
+        url.searchParams.append("page", pageNumber);
+
+        if (classId) {
+            url.searchParams.append("class_id", classId);
+        }
+
+        if (searchTerm) {
+            url.searchParams.append("search", searchTerm);
+        }
+
+        return url;
+    }, [pageNumber, classId]);
+
+    useEffect(() => {
+        if (isInitialRender.current) {
+            isInitialRender.current = false;
+            return;
+        }
+
+        router.visit(studentsUrl, {
+            preserveScroll: true,
+            preserveState: true,
+            // replace: true,
+        });
+    }, [studentsUrl]);
+
     return (
         <AuthenticatedLayout
             user={auth.user}
@@ -100,7 +143,12 @@ export default function Dashboard({ auth, students }) {
                                     </tbody>
                                 </table>
                             </div>
-
+                            <div>
+                                <Pagination
+                                    updatedPageNumber={updatedPageNumber}
+                                    meta={students.meta}
+                                />
+                            </div>
                         </div>
                     </div>
                 </div>
