@@ -1,13 +1,13 @@
 import Pagination from "@/Components/Pagination";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, Link, router, usePage } from "@inertiajs/react";
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from "react";
 
 export default function Dashboard({ auth, students }) {
-    const page = usePage()
+    const page = usePage();
 
     const isInitialRender = useRef(true);
-    
+
     const [searchTerm, setSearchTerm] = useState(usePage().props.search || "");
     const [classId, setClassId] = useState(usePage().props.class_id || "");
     const [pageNumber, setPageNumber] = useState("");
@@ -41,22 +41,35 @@ export default function Dashboard({ auth, students }) {
         router.visit(studentsUrl, {
             preserveScroll: true,
             preserveState: true,
-            // replace: true,
         });
     }, [studentsUrl]);
 
     return (
         <AuthenticatedLayout
             user={auth.user}
-            header={
-                <h2 className="font-semibold text-xl text-gray-800 leading-tight">
-                    Students
-                </h2>
-            }
         >
             <Head title="Students" />
 
-            <div className="max-w-7xl mx-auto px-10">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+                <div className="sm:flex sm:items-center">
+                    <div className="sm:flex-auto">
+                        <h1 className="text-xl font-semibold text-gray-900">
+                            Students
+                        </h1>
+                        <p className="mt-2 text-sm text-gray-700">
+                            A list of all the Students.
+                        </p>
+                    </div>
+
+                    <div className="mt-4 sm:mt-0 sm:ml-16 sm:flex-none">
+                        <Link
+                            href={route("students.create")}
+                            className="inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:w-auto"
+                        >
+                            Add Student
+                        </Link>
+                    </div>
+                </div>
                 <div className="mt-8 flex flex-col">
                     <div className="-my-2 -mx-4 overflow-x-auto sm:-mx-6 lg:-mx-8">
                         <div className="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
