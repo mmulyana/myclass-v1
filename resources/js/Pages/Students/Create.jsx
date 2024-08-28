@@ -1,7 +1,19 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import { Head } from '@inertiajs/react';
+import { Head, useForm } from "@inertiajs/react";
 
-export default function Create({ auth }) {
+export default function Create({ auth, classes }) {
+    const { data, setData, post } = useForm({
+        name: "",
+        email: "",
+        class_id: "",
+        section_id: "",
+    });
+
+    function submit(e) {
+        e.preventDefault();
+        post("students.store");
+    }
+
     return (
         <AuthenticatedLayout
             user={auth.user}
@@ -15,7 +27,7 @@ export default function Create({ auth }) {
             <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
                 <div className="lg:grid lg:grid-cols-12 lg:gap-x-5">
                     <div className="space-y-6 sm:px-6 lg:px-0 lg:col-span-12">
-                        <form>
+                        <form onSubmit={submit}>
                             <div className="shadow sm:rounded-md sm:overflow-hidden">
                                 <div className="bg-white py-6 px-4 space-y-6 sm:p-6">
                                     <div>
@@ -39,7 +51,14 @@ export default function Create({ auth }) {
                                             <input
                                                 type="text"
                                                 id="name"
-                                                className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm text-red-900 focus:ring-red-500 focus:border-red-500 border-red-300"
+                                                className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm text-red-900"
+                                                value={data.name}
+                                                onChange={(e) =>
+                                                    setData(
+                                                        "name",
+                                                        e.target.value
+                                                    )
+                                                }
                                             />
                                         </div>
 
@@ -55,6 +74,13 @@ export default function Create({ auth }) {
                                                 id="email"
                                                 autoComplete="email"
                                                 className={`mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm`}
+                                                value={data.email}
+                                                onChange={(e) =>
+                                                    setData(
+                                                        "email",
+                                                        e.target.value
+                                                    )
+                                                }
                                             />
                                         </div>
 
@@ -68,6 +94,13 @@ export default function Create({ auth }) {
                                             <select
                                                 id="class_id"
                                                 className={`mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm`}
+                                                value={data.class_id}
+                                                onChange={(e) =>
+                                                    setData(
+                                                        "class_id",
+                                                        e.target.value
+                                                    )
+                                                }
                                             >
                                                 <option value="">
                                                     Select a Class
@@ -88,6 +121,13 @@ export default function Create({ auth }) {
                                             <select
                                                 id="section_id"
                                                 className={`mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm`}
+                                                value={data.section_id}
+                                                onChange={(e) =>
+                                                    setData(
+                                                        "section_id",
+                                                        e.target.value
+                                                    )
+                                                }
                                             >
                                                 <option value="">
                                                     Select a Section
