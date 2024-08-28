@@ -44,6 +44,14 @@ export default function Dashboard({ auth, students }) {
         });
     }, [studentsUrl]);
 
+    function deleteStudent(id) {
+        if (confirm("Are you sure?")) {
+            router.delete(route("students.destroy", id), {
+                preserveScroll: true,
+            });
+        }
+    }
+
     return (
         <AuthenticatedLayout user={auth.user}>
             <Head title="Students" />
@@ -150,7 +158,14 @@ export default function Dashboard({ auth, students }) {
                                                         >
                                                             Edit
                                                         </Link>
-                                                        <button className="ml-2 text-indigo-600 hover:text-indigo-900">
+                                                        <button
+                                                            onClick={() =>
+                                                                deleteStudent(
+                                                                    student.id
+                                                                )
+                                                            }
+                                                            className="ml-2 text-indigo-600 hover:text-indigo-900"
+                                                        >
                                                             Delete
                                                         </button>
                                                     </td>
