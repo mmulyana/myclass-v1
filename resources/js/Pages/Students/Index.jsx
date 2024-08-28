@@ -45,9 +45,7 @@ export default function Dashboard({ auth, students }) {
     }, [studentsUrl]);
 
     return (
-        <AuthenticatedLayout
-            user={auth.user}
-        >
+        <AuthenticatedLayout user={auth.user}>
             <Head title="Students" />
 
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
@@ -143,7 +141,13 @@ export default function Dashboard({ auth, students }) {
                                                     </td>
 
                                                     <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
-                                                        <Link className="text-indigo-600 hover:text-indigo-900">
+                                                        <Link
+                                                            href={route(
+                                                                "students.edit",
+                                                                student.id
+                                                            )}
+                                                            className="text-indigo-600 hover:text-indigo-900"
+                                                        >
                                                             Edit
                                                         </Link>
                                                         <button className="ml-2 text-indigo-600 hover:text-indigo-900">
